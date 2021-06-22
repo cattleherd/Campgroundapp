@@ -3,6 +3,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Campground = require('./models/camp');
 const methodOverride = require('method-override')
+const engine = require('ejs-mate')
+
 
 mongoose.connect('mongodb://localhost:27017/campdb', {
         useNewUrlParser: true,
@@ -23,6 +25,10 @@ app.use(methodOverride('_method'))
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
+
+//sets default ejs engine to ejs-mate
+
+app.engine('ejs', engine)
 
 
 
@@ -76,3 +82,8 @@ app.put('/campgrounds/:id', async(req, res) => {
     res.redirect(`/campgrounds/${campground.id}`)
 })
 
+app.delete('/campgrounds/:id', async(req, res)=>{
+    const id = req.params.id;
+    const campground = await Campground.findByIdAndDelete(id)
+    res.redirect('/campgrounds')
+})
