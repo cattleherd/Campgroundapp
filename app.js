@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const Campground = require('./models/camp');
 const methodOverride = require('method-override')
 const engine = require('ejs-mate')
+const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError');
+const Joi = require('joi');
 
 
 mongoose.connect('mongodb://localhost:27017/campdb', {
@@ -36,6 +39,30 @@ app.listen(3000, ()=>{
     console.log('listening on port 3000')
 })
 
+
+const campgroundValidation = (req, res, next) => {
+    const campgroundSchema = Joi.object({
+        campground: Joi.object({
+            title: Joi.string().required(),
+            price: Joi.number().min(0).required(),
+            image: Joi.string().required(),
+            location: Joi.string().required(),
+            description: Joi.string().required(),
+
+        }).required()
+    })
+    const {error} = campgroundSchema.validate(req.body);
+    if (error){
+        const text = error.details.map(e => e.message).join(',')
+        throw new ExpressError(text, 400)
+
+    } else {
+        next()
+    }
+}
+
+
+
 app.get('/', (req,res)=>{
     res.render('home')
 })
@@ -53,19 +80,18 @@ app.get('/campgrounds/new', (req, res)=>{
     res.render('campgrounds/new')
 })
 
-app.post('/campgrounds', async (req, res) => {
-    const campground = new Campground(req.body.campground); //.campground because result campground[] due to form from new
-    await campground.save();
-    res.redirect(`/campgrounds/${campground._id}`)
-    
+app.post('/campgrounds', campgroundValidation, async (req, res, next) => {
+        const campground = new Campground(req.body.campground); //.campground because result campground[] due to form from new
+        await campground.save();
+        res.redirect(`/campgrounds/${campground._id}`)
 })
 
 //route for viewing a selected campground
 
-app.get('/campgrounds/:id', async (req, res) =>{
+app.get('/campgrounds/:id', catchAsync(async (req, res) =>{
     const campground = await Campground.findById(req.params.id);
     res.render('campgrounds/show', { campground });
-})
+}))
 
 
 // route for edit / update 
@@ -77,13 +103,26 @@ app.get('/campgrounds/:id/edit', async(req, res) => {
 
 
 app.put('/campgrounds/:id', async(req, res) => {
-    const id = req.params.id;
-    const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
-    res.redirect(`/campgrounds/${campground.id}`)
+
+        const id = req.params.id;
+        const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+        res.redirect(`/campgrounds/${campground.id}`)
+
 })
 
 app.delete('/campgrounds/:id', async(req, res)=>{
     const id = req.params.id;
     const campground = await Campground.findByIdAndDelete(id)
     res.redirect('/campgrounds')
+})
+
+//404 route
+app.all('*', (req, res, next) => {
+    next(new ExpressError('page not found', 404))
+})
+
+//error handler middleware
+app.use(function (err, req, res, next) {
+    const { statusCode = 500, message = 'something went wrong' } = err;
+    res.status(statusCode).send(message);
 })

@@ -3,29 +3,29 @@
     <div class="row">
         <h1 class="text-center">New Campground</h1>
         <div class="col-6 offset-3">
-            <form action="/campgrounds" method="POST">
+            <form action="/campgrounds" method="POST" novalidate class="validatedform">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input type="text" class='form-control' id="title" name="campground[title]">
+                    <input type="text" class='form-control' id="title" name="campground[title]" required>
                 </div>
                 <div class="mb-3">
                     <label for="location" class="form-label">location</label>
-                    <input type="text" class='form-control' id="location" name="campground[location]">
+                    <input type="text" class='form-control' id="location" name="campground[location]" required>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">img/url</label>
-                    <input type="text" class='form-control' id="image" name="campground[image]">
+                    <input type="text" class='form-control' id="image" name="campground[image]" required>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">description</label>
-                    <textarea class='form-control' type='text' id="description" name="campground[description]"></textarea>
+                    <textarea class='form-control' type='text' id="description" name="campground[description]" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">$</span>
-                        <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price" aria-describedby="campground price">
-                      </div>
+                        <input type="text" class="form-control" id="price" name="campground[price]" placeholder="0.00" aria-label="price" aria-describedby="campground price" required>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Add campground</button>
@@ -33,6 +33,28 @@
             </form
         </div>
     </div>
+
+    <script>
+        (function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.validatedform')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+    </script>
     
     <!--note that in request.body, everything is packaged under campground
     <form action="/campgrounds" method="POST">
