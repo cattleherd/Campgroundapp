@@ -39,7 +39,7 @@ app.listen(3000, ()=>{
     console.log('listening on port 3000')
 })
 
-
+//campground validation middleware function
 const campgroundValidation = (req, res, next) => {
     const campgroundSchema = Joi.object({
         campground: Joi.object({
@@ -102,7 +102,7 @@ app.get('/campgrounds/:id/edit', async(req, res) => {
 })
 
 
-app.put('/campgrounds/:id', async(req, res) => {
+app.put('/campgrounds/:id', campgroundValidation, async(req, res) => {
 
         const id = req.params.id;
         const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
