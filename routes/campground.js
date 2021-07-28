@@ -25,18 +25,19 @@ const campgroundValidation = (req, res, next) => {
 
 router.get('/', async (req, res) =>{
     const campgrounds = await Campground.find({}); //grabs campground collection (all)
-    res.render('campgrounds/index', { campgrounds })
+    res.render('./campgrounds/index', { campgrounds })
 })
 
 // routes for creating new campground
 
-router.get('/new', (req, res)=>{
-    res.render('campgrounds/new')
+router.get('/new', (req, res)=>{ //render 'new campground' page
+    res.render('./campgrounds/new')
 })
 
 router.post('/', campgroundValidation, async (req, res, next) => {
         const campground = new Campground(req.body.campground); //.campground because result campground[] due to form from new
         await campground.save();
+        req.flash('success', 'successfully made a new campground!'); //flashing message after creating campground (if successful)
         res.redirect(`/campgrounds/${campground._id}`)
 })
 
@@ -44,23 +45,29 @@ router.post('/', campgroundValidation, async (req, res, next) => {
 //populates new reviews every time route is reached
 router.get('/:id', catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate('reviews');
-    res.render('campgrounds/show', { campground });
+    if(!campground){  //incase you try to pass empty campground in render template
+        req.flash('error', 'unable to find campground');
+        return res.redirect('/campgrounds');
+    }   
+    res.render('./campgrounds/show', { campground });
 }))
-
-
 
 // route for edit / update 
 
 router.get('/:id/edit', async(req, res) => {
     const campground = await Campground.findById(req.params.id);
-    res.render('campgrounds/edit', { campground });
+    if(!campground){  //incase you try to pass empty campground in render template
+        req.flash('error', 'unable to find campground');
+        return res.redirect('/campgrounds');
+    } 
+    res.render('./campgrounds/edit', { campground });
 })
-
 
 router.put('/:id', campgroundValidation, async(req, res) => {
 
         const id = req.params.id;
         const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+        req.flash('success', 'successfully updated campground')
         res.redirect(`/campgrounds/${campground.id}`)
 
 })
@@ -69,6 +76,7 @@ router.put('/:id', campgroundValidation, async(req, res) => {
 router.delete('/:id', async(req, res)=>{
     const id = req.params.id;
     const campground = await Campground.findByIdAndDelete(id)
+    req.flash('success', 'successfully deleted campground')
     res.redirect('/campgrounds')
 })
 

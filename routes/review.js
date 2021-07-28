@@ -1,10 +1,9 @@
 const express = require('express');
-const router = express.Router({ mergeParams: true });
+const router = express.Router({ mergeParams: true }); //mergeparams removes errors in console
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 
-
-const { reviewSchema } = require('../schemas.js'); //include {} gives error otherwise (reviewschema.validate not function)
+const { reviewSchema } = require('../schemas.js'); //include {} when linking schemas as it gives error otherwise (reviewschema.validate not function)
 
 const Campground = require('../models/camp');
 const Review = require('../models/review');
@@ -19,8 +18,6 @@ const reviewValidation = (req, res, next) => {
     }
 }
 
-
-
 //route for creating reviews
 router.post('/', reviewValidation , catchAsync(async(req, res) => {
     const campground = await Campground.findById(req.params.id);
@@ -28,6 +25,7 @@ router.post('/', reviewValidation , catchAsync(async(req, res) => {
     campground.reviews.push(review)
     await review.save();
     await campground.save();
+    req.flash('success', 'created new review!')
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 
@@ -37,6 +35,7 @@ router.delete('/:reviewID', catchAsync(async (req, res) => {
     const {reviewID, id} = req.params; //reviewID is referenced from the show page (for review in campground.reviews)
     await Campground.findByIdAndUpdate(id, {$pull: {review: reviewID}}); //removes review ref in review array in campground db by reviewID (using pull function)
     await Review.findByIdAndDelete(reviewID);
+    req.flash('success', 'successfully deleted review!')
     res.redirect(`/campgrounds/${id}`);
 
 }))

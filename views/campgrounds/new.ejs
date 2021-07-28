@@ -33,34 +33,3 @@
             </form
         </div>
     </div>
-
-    <script>
-        (function () {
-  'use strict'
-
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.validatedform')
-
-  // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
-    </script>
-    
-    <!--note that in request.body, everything is packaged under campground
-    <form action="/campgrounds" method="POST">
-    <label for="title">title</label>
-    <input type="text" id="title" name="campground[title]">
-    <label for="location">location</label>
-    <input type="text" id="location" name="campground[location]">
-    <button>Add campground</button>     
-    </form> -->
