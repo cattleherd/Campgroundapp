@@ -7,6 +7,7 @@ const { reviewSchema } = require('../schemas.js'); //include {} when linking sch
 
 const Campground = require('../models/camp');
 const Review = require('../models/review');
+const { isLoggedIn } = require('../middleware');
 
 const reviewValidation = (req, res, next) => {
     const { error }  = reviewSchema.validate(req.body);
@@ -19,7 +20,7 @@ const reviewValidation = (req, res, next) => {
 }
 
 //route for creating reviews
-router.post('/', reviewValidation , catchAsync(async(req, res) => {
+router.post('/', reviewValidation , isLoggedIn, catchAsync(async(req, res) => {
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
     campground.reviews.push(review)
@@ -31,7 +32,7 @@ router.post('/', reviewValidation , catchAsync(async(req, res) => {
 
 //route for deleting review (deletes ref inside campground db and entry inside review db)
 
-router.delete('/:reviewID', catchAsync(async (req, res) => {
+router.delete('/:reviewID', isLoggedIn, catchAsync(async (req, res) => {
     const {reviewID, id} = req.params; //reviewID is referenced from the show page (for review in campground.reviews)
     await Campground.findByIdAndUpdate(id, {$pull: {review: reviewID}}); //removes review ref in review array in campground db by reviewID (using pull function)
     await Review.findByIdAndDelete(reviewID);

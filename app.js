@@ -63,7 +63,7 @@
     passport.serializeUser(User.serializeUser()); //use the serialization method thats been plugged in user model (passport-local-mongoose)
     passport.deserializeUser(User.deserializeUser());
     //this is telling passport how to store and 'un-store' User in the session
-
+    //this is used for keeping user logged in.
 
     app.use(methodOverride('_method')); //allows put and delete routes
 
@@ -72,12 +72,20 @@
     app.set('views', path.join(__dirname, 'views'));
     app.engine('ejs', engine) //sets default ejs engine to ejs-mate
 
-    //Flash middleware (Executed after every request)
+    //Flash methods stored in res.locals for access in all templates
     app.use((req, res, next) => {
        res.locals.success = req.flash('success');//stores whatever message is under flash('success')
        res.locals.error = req.flash('error');   // inside res.locals for easy access in html templates
        next();                                 
-    })                                          
+    })     
+
+    //req.user is stored in res.locals variable currentUser to select the user thats in sessions (added for logout functionality)
+    //req.user is added from passport middleware
+    app.use((req, res, next) =>{
+        res.locals.currentUser = req.user;
+        next();
+    })
+                                         
 
     //express router middleware
     app.use('/campgrounds', campgroundRoutes); //campground router
