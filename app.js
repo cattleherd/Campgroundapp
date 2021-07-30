@@ -79,10 +79,20 @@
        next();                                 
     })     
 
+    
     //req.user is stored in res.locals variable currentUser to select the user thats in sessions (added for logout functionality)
     //req.user is added from passport middleware
     app.use((req, res, next) =>{
         res.locals.currentUser = req.user;
+
+        //this makes user experience more seamless. When a user tries to access a page thats restricted
+        //the user is redirected to login. Once verified they are redirected to the page they wanted to visit.
+        //in order to make this work, since this check is run for every route, you need to ignore the login route and home route.
+        //this will avoid a loop where logging in redirects to login page. Look at user controller for implementation in login route.
+        if (!['/login', '/'].includes(req.originalUrl)){
+            req.session.returnTo = req.originalUrl;
+            console.log(req.session);
+        }  
         next();
     })
                                          
