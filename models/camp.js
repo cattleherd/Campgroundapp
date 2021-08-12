@@ -10,10 +10,16 @@ const CampgroundSchema = new Schema({
     reviews: [     //array of object ids which is linked to review model
         {        //one to many relationship (one campground many reviews)  
             type: Schema.Types.ObjectId,
-            ref: 'Review' 
+            ref: 'Review'
         }
 
-    ]
+    ],
+
+    author: {
+
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 
 });
 

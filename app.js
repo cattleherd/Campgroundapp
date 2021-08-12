@@ -45,7 +45,7 @@
         saveUninitialized: true,
         cookie: {
             httpOnly: true, //protects cookies (Security feature, enabled default)
-            maxAge: 10000
+            maxAge: 100000000
         }
     }
     app.use(session(sessionConfig))
@@ -72,30 +72,23 @@
     app.set('views', path.join(__dirname, 'views'));
     app.engine('ejs', engine) //sets default ejs engine to ejs-mate
 
-    //Flash methods stored in res.locals for access in all templates
+    //res.locals variables for access in templates
     app.use((req, res, next) => {
        res.locals.success = req.flash('success');//stores whatever message is under flash('success')
        res.locals.error = req.flash('error');   // inside res.locals for easy access in html templates
-       next();                                 
-    })     
-
-    
-    //req.user is stored in res.locals variable currentUser to select the user thats in sessions (added for logout functionality)
-    //req.user is added from passport middleware
-    app.use((req, res, next) =>{
-        res.locals.currentUser = req.user;
-
-        //this makes user experience more seamless. When a user tries to access a page thats restricted
+       //user info stored in currentUser variable to be accessed by templates.
+       res.locals.currentUser = req.user;
+       //this makes user experience more seamless. When a user tries to access a page thats restricted
         //the user is redirected to login. Once verified they are redirected to the page they wanted to visit.
         //in order to make this work, since this check is run for every route, you need to ignore the login route and home route.
         //this will avoid a loop where logging in redirects to login page. Look at user controller for implementation in login route.
-        if (!['/login', '/'].includes(req.originalUrl)){
-            req.session.returnTo = req.originalUrl;
-            console.log(req.session);
-        }  
-        next();
-    })
-                                         
+       if (!['/login', '/'].includes(req.originalUrl)){
+        req.session.returnTo = req.originalUrl;
+    
+    }  
+       next();                                 
+    })     
+                                 
 
     //express router middleware
     app.use('/campgrounds', campgroundRoutes); //campground router
