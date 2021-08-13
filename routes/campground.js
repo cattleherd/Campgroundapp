@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
@@ -9,13 +10,14 @@ const Campground = require('../models/camp');
 const { campgroundSchema }  = require('../schemas.js'); //include {} or else error
 const { isLoggedIn, userAuth, campgroundValidation } = require('../middleware')
 
-
+const upload = multer({ dest: 'uploads/' })
 
 router.route('/')
     //route for rendering campgrounds index
     .get(catchAsync(campgrounds.index))
     //route for submit new campground
-    .post(isLoggedIn, campgroundValidation, catchAsync(campgrounds.createNewCampground))
+    .post(upload.array('image'), (req, res) => {
+    });
 
 // routes for creating new campground
 router.get('/new', isLoggedIn, campgrounds.renderNewForm)

@@ -3,11 +3,12 @@
     <div class="row">
         <h1 class="text-center">New Campground</h1>
         <div class="col-6 offset-3">
-            <form action="/campgrounds" method="POST" novalidate class="validatedform">
+            <form action="/campgrounds" method="POST" novalidate class="validatedform" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" class='form-control' id="title" name="campground[title]" required>
                 </div>
+                    <input type="file" name="image" id="lol" multiple>
                 <div class="mb-3">
                     <label for="location" class="form-label">location</label>
                     <input type="text" class='form-control' id="location" name="campground[location]" required>
