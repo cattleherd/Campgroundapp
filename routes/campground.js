@@ -10,24 +10,25 @@ const { campgroundSchema }  = require('../schemas.js'); //include {} or else err
 const { isLoggedIn, userAuth, campgroundValidation } = require('../middleware')
 
 
-//route for campgrounds index
 
-router.get('/', catchAsync(campgrounds.index) )
+router.route('/')
+    //route for rendering campgrounds index
+    .get(catchAsync(campgrounds.index))
+    //route for submit new campground
+    .post(isLoggedIn, campgroundValidation, catchAsync(campgrounds.createNewCampground))
 
 // routes for creating new campground
-
 router.get('/new', isLoggedIn, campgrounds.renderNewForm)
-router.post('/', isLoggedIn, campgroundValidation, catchAsync(campgrounds.createNewCampground))
 
-//route for viewing a selected campground
-router.get('/:id', catchAsync(campgrounds.viewCampground))
+router.route('/:id')
+    //campground showpage route
+    .get(catchAsync(campgrounds.viewCampground))
+    //update campground route
+    .put(isLoggedIn, campgroundValidation, userAuth, catchAsync(campgrounds.updateEditForm))
+    //delete campground route
+    .delete(isLoggedIn, catchAsync(campgrounds.deleteCampground))
 
-// routes for showing edit form and updating
-
+// routes for showing edit form
 router.get('/:id/edit', isLoggedIn, userAuth, catchAsync(campgrounds.renderEditForm))
-router.put('/:id', isLoggedIn, campgroundValidation, userAuth, catchAsync(campgrounds.updateEditForm))
-
-//delete route
-router.delete('/:id', isLoggedIn, catchAsync(campgrounds.deleteCampground))
 
 module.exports = router;
