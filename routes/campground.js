@@ -7,17 +7,18 @@ const campgrounds = require('../controllers/campgrounds')
 
 const Campground = require('../models/camp');
 
-const { campgroundSchema }  = require('../schemas.js'); //include {} or else error
+const { campgroundSchema }  = require('../schemas.js');
 const { isLoggedIn, userAuth, campgroundValidation } = require('../middleware')
+const { storage } = require('../cloudinary/index')
+const upload = multer({ storage })
 
-const upload = multer({ dest: 'uploads/' })
+
 
 router.route('/')
     //route for rendering campgrounds index
     .get(catchAsync(campgrounds.index))
     //route for submit new campground
-    .post(upload.array('image'), (req, res) => {
-    });
+    .post(isLoggedIn, upload.array('image'), campgroundValidation,  catchAsync(campgrounds.createNewCampground));
 
 // routes for creating new campground
 router.get('/new', isLoggedIn, campgrounds.renderNewForm)
@@ -26,7 +27,7 @@ router.route('/:id')
     //campground showpage route
     .get(catchAsync(campgrounds.viewCampground))
     //update campground route
-    .put(isLoggedIn, campgroundValidation, userAuth, catchAsync(campgrounds.updateEditForm))
+    .put(isLoggedIn, upload.array('image'), campgroundValidation, userAuth, catchAsync(campgrounds.updateEditForm))
     //delete campground route
     .delete(isLoggedIn, catchAsync(campgrounds.deleteCampground))
 

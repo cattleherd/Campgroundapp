@@ -1,36 +1,36 @@
 <% layout('/layouts/boilerplate')%>
-
     <div class="row">
-        <h1 class="text-center">New Campground</h1>
         <div class="col-6 offset-3">
+            <h1 class="text-center">New Campground</h1>
             <form action="/campgrounds" method="POST" novalidate class="validatedform" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" class='form-control' id="title" name="campground[title]" required>
                 </div>
-                    <input type="file" name="image" id="lol" multiple>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile" name="image" multiple>
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
                 <div class="mb-3">
                     <label for="location" class="form-label">location</label>
                     <input type="text" class='form-control' id="location" name="campground[location]" required>
                 </div>
                 <div class="mb-3">
-                    <label for="image" class="form-label">img/url</label>
-                    <input type="text" class='form-control' id="image" name="campground[image]" required>
-                </div>
-                <div class="mb-3">
                     <label for="description" class="form-label">description</label>
-                    <textarea class='form-control' type='text' id="description" name="campground[description]" required></textarea>
+                    <textarea class='form-control' type='text' id="description" name="campground[description]"
+                        required></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">$</span>
-                        <input type="text" class="form-control" id="price" name="campground[price]" placeholder="0.00" aria-label="price" aria-describedby="campground price" required>
+                        <input type="text" class="form-control" id="price" name="campground[price]" placeholder="0.00"
+                            aria-label="price" aria-describedby="campground price" required>
                     </div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Add campground</button>
-                </div>     
-            </form
+                </div>
+            </form>
         </div>
     </div>

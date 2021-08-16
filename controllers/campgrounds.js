@@ -14,10 +14,14 @@ module.exports.createNewCampground = async (req, res, next) => {
     const campground = new Campground(req.body.campground); //.campground because result campground[] due to form from new
     //id is pulled from req.user (which is provided by passport when user is logged in). This is needed because campground[author]'s data references to the user schema by the id. (objectID)
     campground.author = req.user._id;
+    campground.image = req.files.map(e => ({ url: e.path, filename: e.filename }))
     await campground.save();
+    console.log(campground);
     req.flash('success', 'successfully made a new campground!'); //flashing message after creating campground (if successful)
     res.redirect(`/campgrounds/${campground._id}`)
 }
+
+
 
 module.exports.viewCampground = async (req, res) => {
     //populates new reviews every time route is reached
@@ -49,7 +53,13 @@ module.exports.renderEditForm = async(req, res) => {
 
 module.exports.updateEditForm = async(req, res) => {
     const { id } = req.params;
+    console.log(req.body)
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+    //since map returns array, we don't want to push an array inside an array
+    const imgs = req.files.map(e => ({ url: e.path, filename: e.filename }))
+    //so we initialize an array with name imgs, and spread the contents of this array (imgs) inside the image array
+    campground.image.push(...imgs);
+    await campground.save();
     req.flash('success', 'successfully updated campground')
     res.redirect(`/campgrounds/${campground.id}`)
 
