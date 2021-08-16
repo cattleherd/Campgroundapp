@@ -34,11 +34,10 @@
                 </div>
                 <div class='mb-3'>
                     <% campground.image.forEach((img, i)=> { %>
-                        <img src="<%= img.url  %> " class="img-thumbnail" alt="">
-                        
+                        <img src="<%=img.thumbnail%> " class="img-thumbnail" alt="">
                         <div class="form-check">
                             <!-- the value is stored in the array deleteImage denoted by square brackets  -->
-                            <input class="form-check-input" type="checkbox" value="<%= img.filename %> " id="image-<%= i %>" name="deleteImage[]">
+                            <input class="form-check-input" type="checkbox" value="<%=img.filename%>" id="image-<%= i %>" name="deleteImage[]">
                             <label class="form-check-label" for="image-<%= i %>">Default checkbox</label>
                         </div>
                         <% }) %>

@@ -41,7 +41,7 @@
 
     //serve static files (scripts/css) in public directory
     app.use(express.static(path.join(__dirname, 'public'))); //path.join allows you to specify absolute paths when injecting scripts etc incase node is launched in different directory 
-
+    mongoose.set('useFindAndModify', false);
 
     //sessions middleware
     const sessionConfig = {
