@@ -1,20 +1,24 @@
 <% layout('/layouts/boilerplate') %>
+<div class="card shadow mx-auto" style="width: 18rem;">
+    <img class="card-img-top" src="https://blog.butterfield.com/wp-content/uploads/2018/03/Mountain-960px-cmoprpessed.jpg" alt="Card image cap">
+    <div class="card-body">
+        <form action="/login" method="POST" class="validatedform" novalidate>
+            <div class="mb-3">
+                <label class="form-label" for="username">username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="password">password</label>
+                <input type="text" class="form-control" id="password" name="password" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <button class="btn btn-success btn-block">Login</button>
+        </form>
+    </div>
+  </div>
 
-<h1>Login</h1>
-<form action="/login" method="POST" class="validatedform" novalidate>
-    <div class="mb-3">
-        <label class="form-label" for="username">username</label>
-        <input type="text" class="form-control" id="username" name="username" required>
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-    </div>
-    <div class="mb-3">
-        <label class="form-label" for="password">password</label>
-        <input type="text" class="form-control" id="password" name="password" required>
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-    </div>
-    <button class="btn btn-success">Login</button>
-</form>

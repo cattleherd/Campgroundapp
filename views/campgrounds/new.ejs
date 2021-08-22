@@ -1,7 +1,10 @@
 <% layout('/layouts/boilerplate')%>
-    <div class="row">
-        <div class="col-6 offset-3">
-            <h1 class="text-center">New Campground</h1>
+    <div class="card shadow mx-auto" style="width: 23rem;">
+        <img class="card-img-top"
+            src="https://blog.butterfield.com/wp-content/uploads/2018/03/Rockies-Fall-960px-compressed.jpg"
+            alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title text-center">New Campground</h5>
             <form action="/campgrounds" method="POST" novalidate class="validatedform" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
@@ -29,7 +32,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-success">Add campground</button>
+                    <button class="btn btn-success btn-block">Add campground</button>
                 </div>
             </form>
         </div>

@@ -28,4 +28,10 @@
     </div>
     <% } %>
 
+
+    <script>
+      const camp = <%- JSON.stringify(campgrounds) %>
+    </script>
+
+    <!-- camp variable now accessible in clustermap.js -->
     <script src="/scripts/clusterMap.js"></script>

@@ -26,11 +26,11 @@ module.exports.createNewCampground = async (req, res, next) => {
     }).send()
         .then(response => {
             const match = response.body;
-            campground.geoJSON = match.features[0].geometry
+            campground.geometry = match.features[0].geometry
         })
     await campground.save();
     req.flash('success', 'successfully made a new campground!'); //flashing message after creating campground (if successful)
-    console.log(campground.geoJSON.coordinates)
+    console.log(campground.geometry.coordinates)
     res.redirect(`/campgrounds/${campground._id}`)
 }
 
