@@ -1,8 +1,10 @@
 <% layout('/layouts/boilerplate')%>
 
-<div class="card mx-auto shadow" style="width: 35rem;">
-  <img class="card-img-top" src="https://blog.butterfield.com/wp-content/uploads/2018/03/Rockies-Fall-960px-compressed.jpg" alt="Card image cap">
-  <div class="card-body">
+    <div class="card mx-auto shadow" style="width: 35rem;">
+        <img class="card-img-top"
+            src="https://blog.butterfield.com/wp-content/uploads/2018/03/Rockies-Fall-960px-compressed.jpg"
+            alt="Card image cap">
+        <div class="card-body">
             <h1 class="text-center">Edit Campground</h1>
             <form action="/campgrounds/<%= campground.id %>?_method=PUT" method="POST" novalidate
                 class="needs-validation" enctype="multipart/form-data">
@@ -33,28 +35,26 @@
                             aria-label="price" aria-describedby="campground price" name="campground[price]" required>
                     </div>
                 </div>
-                <div class='mb-3'>
-                    <% campground.image.forEach((img, i)=> { %>
-                        <img src="<%=img.thumbnail%> " class="img-thumbnail" alt="">
-                        <div class="form-check">
-                            <!-- the value is stored in the array deleteImage denoted by square brackets  -->
-                            <input class="form-check-input" type="checkbox" value="<%=img.filename%>" id="image-<%= i %>" name="deleteImage[]">
-                            <label class="form-check-label" for="image-<%= i %>">Delete image</label>
-                        </div>
-                        <% }) %>
+                <div class='container mb-3'>
+                    <div class="row">
+                        <% campground.image.forEach((img, i)=> { %>
+                            <div class="col-md-6">
+                                <img src="<%=img.thumbnail%> " class="img-fluid img-thumbnail" style="height: 10rem; width: 15rem;"  alt="">
+                                <div class="form-check">
+                                    <!-- the value is stored in the array deleteImage denoted by square brackets  -->
+                                    <input class="form-check-input" type="checkbox" value="<%=img.filename%>"
+                                        id="image-<%= i %>" name="deleteImage[]">
+                                    <label class="form-check-label" for="image-<%= i %>">Delete image</label>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success btn-block">Update campground</button>
                 </div>
             </form>
         </div>
-    </div>  </div>
-</div>
-
-
-
-
-
-
-
-    
+    </div>
+    </div>
+    </div>
