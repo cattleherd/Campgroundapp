@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV !== "production"){
+if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
@@ -20,38 +20,60 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const MongoStore = require('connect-mongo');
 
 
 const mongoSanitize = require('express-mongo-sanitize');
 
+const dbUrl = process.env.DB_URL
 
 
 const app = express();
-app.use(express.urlencoded({ extended: true })); 
-app.listen(3000, ()=>{
+app.use(express.urlencoded({ extended: true }));
+app.listen(3000, () => {
     console.log('listening on port 3000')
 })
 
-
-
+//'mongodb://localhost:27017/campdb'
+//mongodb+srv://cattleherd:<Ludacris123>@cluster0.busdy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 mongoose.connect('mongodb://localhost:27017/campdb', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
 });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function(){
-console.log('connected')
+db.once('open', function () {
+    console.log('connected')
 });
 
 //serve static files (scripts/css) in public directory
 app.use(express.static(path.join(__dirname, 'public'))); //path.join allows you to specify absolute paths when injecting scripts etc incase node is launched in different directory 
 mongoose.set('useFindAndModify', false);
 
-//sessions middleware
+
+//store session cookie in mongodb under session
+app.use(session({
+    secret: 'keyboard cat',
+    collectionName: 'RadCamp',
+    saveUninitialized: false, // don't create session until something stored
+    resave: false, //don't save session if unmodified
+    ttl: 14 * 24 * 60 * 60,
+    store: MongoStore.create({
+      mongoUrl: 'mongodb://localhost:27017/campdb',
+      touchAfter: 24 * 3600 // time period in seconds
+    }).on("error", function(e){  //error handling
+        console.log("session store error", e)
+    })
+  }));
+
+
+
+/*  
+//sessions middleware storing in memory
 const sessionConfig = {
+
     name: 'RadCamp',
     secret: 'thisisasecret',
     resave: false,
@@ -59,9 +81,18 @@ const sessionConfig = {
     cookie: {
         httpOnly: true, //protects cookies (Security feature, enabled default)
         maxAge: 100000000
-    }
+    },
+    store: MongoStore.create({
+        mongoUrl: 'mongodb://localhost:27017/campdb',
+        touchAfter: 24 * 3600 // time period in seconds
+    })
 }
-app.use(session(sessionConfig))
+*/   //memory storage of session data
+
+/*memory storage of session data
+app.use(session(sessionConfig));
+
+*/
 
 
 app.use(flash());//instantiate flash
@@ -70,7 +101,7 @@ app.use(flash());//instantiate flash
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(User.authenticate())); 
+passport.use(new LocalStrategy(User.authenticate()));
 //allow passport to utilize LocalStrategy
 //utilize authenticate method thats been plugged into user model (static method)
 
@@ -88,21 +119,21 @@ app.engine('ejs', engine) //sets default ejs engine to ejs-mate
 
 //res.locals variables for access in templates
 app.use((req, res, next) => {
-   res.locals.success = req.flash('success');//stores whatever message is under flash('success')
-   res.locals.error = req.flash('error');   // inside res.locals for easy access in html templates
-   //user info stored in currentUser variable to be accessed by templates.
-   res.locals.currentUser = req.user;
-   //this makes user experience more seamless. When a user tries to access a page thats restricted
+    res.locals.success = req.flash('success');//stores whatever message is under flash('success')
+    res.locals.error = req.flash('error');   // inside res.locals for easy access in html templates
+    //user info stored in currentUser variable to be accessed by templates.
+    res.locals.currentUser = req.user;
+    //this makes user experience more seamless. When a user tries to access a page thats restricted
     //the user is redirected to login. Once verified they are redirected to the page they wanted to visit.
     //in order to make this work, since this check is run for every route, you need to ignore the login route and home route.
     //this will avoid a loop where logging in redirects to login page. Look at user controller for implementation in login route.
-   if (!['/login', '/'].includes(req.originalUrl)){
-    req.session.returnTo = req.originalUrl;
+    if (!['/login', '/'].includes(req.originalUrl)) {
+        req.session.returnTo = req.originalUrl;
 
-}  
-   next();                                 
-})     
-                             
+    }
+    next();
+})
+
 
 //express router middleware
 app.use('/campgrounds', campgroundRoutes); //campground router
@@ -158,7 +189,7 @@ app.use(
 );
 
 
-app.get('/', (req,res)=>{
+app.get('/', (req, res) => {
     res.render('home')
 })
 
