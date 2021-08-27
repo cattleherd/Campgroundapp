@@ -122,14 +122,15 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');   // inside res.locals for easy access in html templates
     //user info stored in currentUser variable to be accessed by templates.
     res.locals.currentUser = req.user;
+    console.log(req.originalUrl)
     //this makes user experience more seamless. When a user tries to access a page thats restricted
     //the user is redirected to login. Once verified they are redirected to the page they wanted to visit.
     //in order to make this work, since this check is run for every route, you need to ignore the login route and home route.
     //this will avoid a loop where logging in redirects to login page. Look at user controller for implementation in login route.
-    if (!['/login', '/'].includes(req.originalUrl)) {
+    /*if (!['/login', '/'].includes(req.originalUrl)) {
         req.session.returnTo = req.originalUrl;
 
-    }
+    } */
     next();
 })
 

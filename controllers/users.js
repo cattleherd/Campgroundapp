@@ -27,9 +27,9 @@ module.exports.renderLoginForm = (req, res) => {
     res.render('./users/login')
 }
 
-module.exports.loginUser = passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), (req, res)=>{
+module.exports.loginUser = passport.authenticate('local', {failureFlash: true, successRedirect: '/campgrounds', failureRedirect: '/login'}), (req, res)=>{
     req.flash('success', 'welcome back')
-    res.redirect(req.session.returnTo || '/campgrounds')
+    res.redirect('/campgrounds')
 }
 
 module.exports.logoutUser = (req, res) =>{
