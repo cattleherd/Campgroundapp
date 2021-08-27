@@ -27,11 +27,11 @@ const mongoSanitize = require('express-mongo-sanitize');
 
 const dbUrl = process.env.DB_URL
 
-
+const port = process.env.PORT || 3000
 const app = express();
 app.use(express.urlencoded({ extended: true }));
-app.listen(3000, () => {
-    console.log('listening on port 3000')
+app.listen(port, () => {
+    console.log(`listening on port ${port} `)
 })
 
 //'mongodb://localhost:27017/campdb'
