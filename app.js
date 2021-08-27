@@ -35,8 +35,7 @@ app.listen(3000, () => {
 })
 
 //'mongodb://localhost:27017/campdb'
-//mongodb+srv://cattleherd:<Ludacris123>@cluster0.busdy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-mongoose.connect('mongodb://localhost:27017/campdb', {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
@@ -61,7 +60,7 @@ app.use(session({
     resave: false, //don't save session if unmodified
     ttl: 14 * 24 * 60 * 60,
     store: MongoStore.create({
-      mongoUrl: 'mongodb://localhost:27017/campdb',
+      mongoUrl: dbUrl,
       touchAfter: 24 * 3600 // time period in seconds
     }).on("error", function(e){  //error handling
         console.log("session store error", e)
