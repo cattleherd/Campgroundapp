@@ -15,7 +15,7 @@
 
 ## Preview
   
-  ![Image](/master/public/Capture.JPG)
+  ![Image](/public/Capture.JPG)
 
   
   
