@@ -22,9 +22,4 @@
   
   ![Image](/public/Capture3.JPG)
 
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
 <p align="right">(<a href="#top">back to top</a>)</p>
