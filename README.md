@@ -12,7 +12,7 @@
 [Node.js](https://nextjs.org/) -
 [MongoDB.js](https://reactjs.org/) -
 [Express.js](https://www.mongodb.com/) -
-[Bootstrap](https://getbootstrap.com) -
+[Bootstrap](https://getbootstrap.com) 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
