@@ -16,6 +16,12 @@
 ## Preview
   
   ![Image](/public/Capture.JPG)
+  
+  ![Image](/public/Capture2.JPG)
+  
+  ![Image](/public/Capture3.JPG)
+
+
 
   
   
