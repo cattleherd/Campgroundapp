@@ -14,8 +14,6 @@
 [Express.js](https://www.mongodb.com/) -
 [Bootstrap](https://getbootstrap.com) 
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 ## Preview
   
   ![Image](/public/Capture4.JPG)
@@ -23,12 +21,6 @@
   ![Image](/public/Capture2.JPG)
   
   ![Image](/public/Capture3.JPG)
-
-
-
-  
-  
-  
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
