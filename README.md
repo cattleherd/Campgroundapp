@@ -4,7 +4,7 @@
   </a>
 <h3 align="center">A web application for viewing and posting campgrounds</h3>
 
-###   Built With
+###Built With
 
 * [Node.js](https://nextjs.org/)
 * [MongoDB.js](https://reactjs.org/)
