@@ -15,7 +15,7 @@
 
 ## Preview
   
-  ![Alt text](/public/capture1.jpg?raw=true)
+  ![Alt text](https://raw.githubusercontent.com/cattleherd/Campgroundapp/master/public/Capture.JPG)
 
   
   
