@@ -9,9 +9,9 @@
   
   
 
-[Node.js](https://nextjs.org/) -
-[MongoDB.js](https://reactjs.org/) -
-[Express.js](https://www.mongodb.com/) -
+[Node.js](https://nodejs.org/en/) -
+[MongoDB.js](https://www.mongodb.com/) -
+[Express.js](https://expressjs.com/) -
 [Bootstrap](https://getbootstrap.com) 
 
 ## Preview
