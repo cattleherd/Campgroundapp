@@ -1,16 +1,16 @@
 <% layout('/layouts/boilerplate')%>
   <div id="cluster-map"></div>
   <% for ( let campground of campgrounds){ %>
-    <div class="card mb-3">
+    <div id="campground-card" class="card mb-3">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <% if (campground.image.length ){ %>
-            <img class="img-fluid" src='<%= campground.image[0].url  %> ' alt="">
+            <img id="campground-image" class="img-fluid" src='<%= campground.image[0].url  %> ' alt="">
             <% } else { %>
               <img src="" alt="">
               <% } %>
         </div>
-        <div class="col-md-8">
+        <div id="campground-text" class="col-md-7">
           <div class="card-body">
             <h5 class="card-title">
               <%= campground.title %>
@@ -28,10 +28,10 @@
     </div>
     <% } %>
 
-
+    <!-- camp variable now accessible in clustermap.js -->
     <script>
       const camp = <%- JSON.stringify(campgrounds) %>
     </script>
 
-    <!-- camp variable now accessible in clustermap.js -->
+    <!--since public is default folder, just need to go into scripts folder.-->
     <script src="/scripts/clusterMap.js"></script>

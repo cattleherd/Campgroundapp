@@ -1,5 +1,5 @@
 <% layout('/layouts/boilerplate')%>
-    <div class="card shadow mx-auto" style="width: 23rem;">
+    <div class="card shadow mx-auto" style="width: 23rem; margin-bottom: 100px;">
         <img class="card-img-top"
             src="https://blog.butterfield.com/wp-content/uploads/2018/03/Rockies-Fall-960px-compressed.jpg"
             alt="Card image cap">
@@ -11,7 +11,7 @@
                     <input type="text" class='form-control' id="title" name="campground[title]" required>
                 </div>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="customFile" name="image" multiple>
+                    <input type="file" class="custom-file-input" id="customFile" name="image" required multiple>
                     <label class="custom-file-label" for="customFile">Choose file</label>
                 </div>
                 <div class="mb-3">

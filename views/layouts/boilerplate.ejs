@@ -10,12 +10,13 @@
     <!-- mapbox js -->    
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js"></script>
     <link rel="stylesheet" href="/stylesheets/app.css">
+    <link rel="stylesheet" href="./stylesheets/index.css"> <!--index.ejs stylesheet-->
 
 
 </head>
 <body class="d-flex flex-column vh-100"> <!--!sets height of body to atleast 100 so footer is at the bottom at edit page -->
     <%- include('../partials/navbar.ejs') %>
-    <main class="container mt-5">
+    <main class="container mt-5" style="margin-bottom: 100px;">
     <%- include('../partials/flash.ejs') %>    
     <%- body %>
     </main>
